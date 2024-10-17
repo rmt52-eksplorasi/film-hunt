@@ -29,9 +29,14 @@
 </template>
 
 <script setup>
+// definePageMeta({
+//     layout
+//         : false,
+// });
 import { ref } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useNuxtApp } from '#app'
+import { useRouter } from 'vue-router'
 
 const toast = useToast()
 
@@ -40,22 +45,24 @@ const form = ref({
     password: ''
 })
 
+const router = useRouter()
+
 // Handle login
 const handleLogin = async () => {
-    // Get $axios from useNuxtApp
     const { $axios } = useNuxtApp()
     try {
-        // Send login request
         const response = await $axios.post('/login', {
             email: form.value.email,
             password: form.value.password
         })
-        // Show success message
-        console.log('Login success:', response.data)
+        // Save token and user email to cookie
+        setCookie('token', response.data.data.access_token, 7)
+        setCookie('userEmail', form.value.email, 7)
         toast.success('Login successful!')
-        // Redirect to dashboard
+
+        // Redirect to /
+        await router.push('/')
     } catch (error) {
-        // Show error message if login failed
         const errorMessage = error?.response?.data?.error || 'Login failed!'
         console.error('Error:', errorMessage)
         toast.error(errorMessage)
