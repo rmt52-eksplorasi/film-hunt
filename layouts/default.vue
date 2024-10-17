@@ -1,15 +1,19 @@
 <template>
     <div>
         <Navbar v-if="!isLoginPage" />
-        <NuxtPage />
+        <NuxtPage :key="route.fullPath" />
     </div>
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router'
-import Navbar from '~/components/navbar.vue';
+import { ref, watch } from 'vue'
+import { useRoute } from '#app'
+import Navbar from '~/components/navbar.vue'
 
 const route = useRoute()
-const isLoginPage = route.name === 'login'
-console.log(isLoginPage)
+const isLoginPage = ref(route.name === 'login')
+
+watch(route, (newRoute) => {
+    isLoginPage.value = newRoute.name === 'login'
+})
 </script>
