@@ -71,7 +71,10 @@
         <!-- Start: Login/Logout buttons -->
         <div class="navbar-end">
             <template v-if="isLoggedIn">
-                <p class="text-gray-700 font-semibold mr-2">Logged in as:</p>
+                <div class="flex flex-col items-center text-gray-700 font-semibold mr-2">
+                    <span class="">Logged in as:</span>
+                    <span>{{ email }}</span>
+                </div>
                 <button class="btn btn-error btn-outline" @click="handleLogout">Logout</button>
             </template>
             <template v-else>
@@ -86,10 +89,16 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
+import { useUserStore } from '~/stores/user';
+import { useLoadingStore } from "~/stores/loading";
 
 const toast = useToast()
 const isLoggedIn = ref(false)
 const router = useRouter()
+const userStore = useUserStore()
+const loadingStore = useLoadingStore()
+
+const email = userStore.email
 
 // Check if the user is logged in by verifying the token in cookies
 onMounted(() => {
@@ -100,11 +109,35 @@ onMounted(() => {
 })
 
 // Handle logout and reset the login state
-const handleLogout = () => {
-    deleteCookie('token')
-    deleteCookie('userEmail')
-    isLoggedIn.value = false
-    toast.success('Logout success, See you later!')
-    router.push('/login')
+// Handle logout and reset the login state
+const handleLogout = async () => {
+    try {
+        // Start the loading
+        loadingStore.startLoading('Logging out, please wait...');
+
+        // Process of clearing token and user data from cookies
+        deleteCookie('token');
+        deleteCookie('userEmail');
+        userStore.clearUserData();
+
+        // Update the login state to false
+        isLoggedIn.value = false;
+
+        // Show success notification
+        toast.success('Logout success, See you later!');
+
+        // Redirect the user to the login page
+        await router.push('/login');
+
+    } catch (error) {
+        // Handle any errors that occur during the logout process
+        console.error('Logout failed:', error);
+        toast.error('Something went wrong during logout. Please try again.');
+
+    } finally {
+        // Ensure loading overlay is stopped, even if there's an error
+        loadingStore.stopLoading();
+    }
 }
+
 </script>
