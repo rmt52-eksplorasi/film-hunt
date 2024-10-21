@@ -8,7 +8,7 @@
       <p class="text-sm">Rating: {{ movie.rating }}</p>
       <p class="text-sm">Genre: {{ movie.Genre.name }}</p>
       <div class="card-actions justify-end">
-        <button class="btn btn-primary btn-sm">Detail</button>
+        <NuxtLink :to="`/detail/${movie.id}`" class="btn btn-primary btn-sm">Detail</NuxtLink>
       </div>
     </div>
   </div>
