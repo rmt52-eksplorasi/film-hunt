@@ -3,14 +3,14 @@
         <!-- Start: Navbar for small screens (Hamburger menu) -->
         <div class="navbar-start">
             <div class="dropdown">
-                <div tabIndex="0" role="button" class="btn btn-ghost lg:hidden">
+                <label tabIndex="0" class="btn btn-ghost lg:hidden">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
                     </svg>
-                </div>
+                </label>
                 <ul tabIndex="0"
-                    class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                    class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                     <li v-for="(link, index) in links" :key="index">
                         <NuxtLink :to="link.url">{{ link.text }}</NuxtLink>
                     </li>
@@ -26,7 +26,7 @@
                     </li>
                 </ul>
             </div>
-            <NuxtLink to='/' class="btn btn-ghost text-xl">Film Hunt</NuxtLink>
+            <NuxtLink to="/" class="btn btn-ghost normal-case text-xl">Film Hunt</NuxtLink>
         </div>
         <!-- End: Navbar for small screens -->
 
@@ -36,15 +36,22 @@
                 <li v-for="(link, index) in links" :key="index">
                     <NuxtLink :to="link.url">{{ link.text }}</NuxtLink>
                 </li>
-                <li v-if="isLoggedIn">
-                    <details>
-                        <summary>CMS</summary>
-                        <ul class="p-2 w-52">
-                            <li v-for="(cmsLink, index) in cmsLinks" :key="index">
-                                <NuxtLink :to="cmsLink.url">{{ cmsLink.text }}</NuxtLink>
-                            </li>
-                        </ul>
-                    </details>
+                <li v-if="isLoggedIn" class="dropdown">
+                    <label tabIndex="0" class="flex items-center cursor-pointer">
+                        Manage
+                        <svg :class="{ 'rotate-180': dropdownOpen }" xmlns="http://www.w3.org/2000/svg"
+                            class="h-4 w-4 ml-2 transition-transform duration-200" viewBox="0 0 20 20"
+                            fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M5.23 7.21a.75.75 0 011.06.02L10 10.93l3.7-3.7a.75.75 0 111.08 1.04l-4.24 4.25a.75.75 0 01-1.08 0L5.23 8.27a.75.75 0 01.02-1.06z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </label>
+                    <ul tabIndex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                        <li v-for="(cmsLink, index) in cmsLinks" :key="index">
+                            <NuxtLink :to="cmsLink.url">{{ cmsLink.text }}</NuxtLink>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>
