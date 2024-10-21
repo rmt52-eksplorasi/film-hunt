@@ -40,8 +40,8 @@
         </div>
         <div class="navbar-end">
             <template v-if="isLoggedIn">
-                <NuxtLink class="btn btn-accent" to="/profile">Profile</NuxtLink>
-                <button class="btn btn-outline" @click="handleLogout">Logout</button>
+                <p class="text-gray-700 font-semibold mr-2">Logged in as: </p>
+                <button class="btn btn-error btn-outline" @click="handleLogout">Logout</button>
             </template>
             <template v-else>
                 <NuxtLink class="btn btn-accent" to="/login">Login</NuxtLink>
@@ -51,15 +51,26 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useToast } from 'vue-toastification'
 
-const isLoggedIn = ref(!!getCookie('token')) // Cek apakah ada token di cookie
+const toast = useToast()
+const isLoggedIn = ref(false)
 const router = useRouter()
 
+onMounted(() => {
+    const token = getCookie('token')
+    if (token) {
+        isLoggedIn.value = true
+    }
+})
+
 const handleLogout = () => {
-    deleteCookie('token') // Hapus token dari cookie
-    isLoggedIn.value = false // Set status login ke false
-    router.push('/login') // Redirect ke halaman login
+    deleteCookie('token')
+    deleteCookie('userEmail')
+    isLoggedIn.value = false
+    toast.success('Logout success, See you later!')
+    router.push('/login')
 }
 </script>

@@ -3,7 +3,4 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss'],
-  // axios: {
-  //   baseURL: 'https://h8-phase2-gc.vercel.app'
-  // },
 })

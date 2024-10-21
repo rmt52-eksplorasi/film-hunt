@@ -29,10 +29,6 @@
 </template>
 
 <script setup>
-// definePageMeta({
-//     layout
-//         : false,
-// });
 import { ref } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useNuxtApp } from '#app'
@@ -58,7 +54,7 @@ const handleLogin = async () => {
         // Save token and user email to cookie
         setCookie('token', response.data.data.access_token, 7)
         setCookie('userEmail', form.value.email, 7)
-        toast.success('Login successful!')
+        toast.success(`Login successful, Welcome!`)
 
         // Redirect to /
         await router.push('/')

@@ -1,21 +1,19 @@
+import Cookies from "universal-cookie";
+
 export function setCookie(name, value, days) {
-  const expires = new Date(Date.now() + days * 864e5).toUTCString();
-  document.cookie =
-    name +
-    "=" +
-    encodeURIComponent(value) +
-    "; expires=" +
-    expires +
-    "; path=/";
+  const cookies = new Cookies();
+  const options = days
+    ? { path: "/", expires: new Date(Date.now() + days * 864e5) }
+    : { path: "/" };
+  cookies.set(name, value, options);
 }
 
 export function getCookie(name) {
-  return document?.cookie.split("; ").reduce((r, c) => {
-    const [key, ...v] = c.split("=");
-    return key === name ? decodeURIComponent(v.join("=")) : r;
-  }, "");
+  const cookies = new Cookies();
+  return cookies.get(name);
 }
 
 export function deleteCookie(name) {
-  setCookie(name, "", -1);
+  const cookies = new Cookies();
+  cookies.remove(name, { path: "/" });
 }
