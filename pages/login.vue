@@ -45,11 +45,11 @@ const form = ref({
     password: ''
 })
 
+const { $axios } = useNuxtApp()
 const router = useRouter()
 
 // Handle login
 const handleLogin = async () => {
-    const { $axios } = useNuxtApp()
     try {
         // Start loading with a custom message
         loadingStore.startLoading('Logging in, please wait...');
@@ -80,10 +80,11 @@ const handleLogin = async () => {
     } catch (error) {
         // Get the error message from the API response or default to 'Login failed!'
         const errorMessage = error?.response?.data?.error || 'Login failed!';
-        console.error('Error:', errorMessage);
+        const errorCode = error?.response?.status;
+        console.error('Error:', errorCode, errorMessage);
 
         // Show an error toast message
-        toast.error(errorMessage);
+        toast.error(`Error: ${errorCode} ${errorMessage}`);
 
     } finally {
         // Always stop the loading overlay, whether login is successful or not
