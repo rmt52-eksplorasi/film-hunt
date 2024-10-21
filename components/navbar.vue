@@ -80,7 +80,7 @@ const links = ref([
 ]);
 
 const cmsLinks = ref([
-    { text: 'Add User', url: '/cms/add-user' },
+    { text: 'Add User', url: '/add-user' },
     { text: 'Movie List', url: '/cms/movies' },
     { text: 'Create New Movie', url: '/cms/movies/create' },
     { text: 'Genre List', url: '/cms/genres' },
