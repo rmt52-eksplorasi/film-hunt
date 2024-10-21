@@ -48,20 +48,21 @@ const limit = ref(10);
 const page = ref(1);
 const totalPages = ref(0);
 
+const { $axios } = useNuxtApp();
+
 const fetchMovies = async () => {
   try {
-    const params = new URLSearchParams({
+    const params = {
       q: searchQuery.value || '',
       i: selectedGenreId.value || '',
       limit: limit.value.toString(),
       page: page.value.toString(),
       sort: sortOrder.value,
-    });
-    const response = await fetch(`https://h8-phase2-gc.vercel.app/apis/pub/movie/movies?${params}`);
-    const result = await response.json();
-    if (result.statusCode === 200) {
-      movies.value = result.data.query;
-      totalPages.value = result.data.pagination.totalPage;
+    };
+    const { data } = await $axios.get(`/pub/movie/movies`, { params });
+    if (data.statusCode === 200) {
+      movies.value = data.data.query;
+      totalPages.value = data.data.pagination.totalPage;
     }
   } catch (error) {
     console.error("Error fetching movies:", error);
@@ -70,10 +71,9 @@ const fetchMovies = async () => {
 
 const fetchGenres = async () => {
   try {
-    const response = await fetch('https://h8-phase2-gc.vercel.app/apis/pub/movie/genres');
-    const result = await response.json();
-    if (result.statusCode === 200) {
-      genres.value = result.data;
+    const { data } = await $axios.get('/pub/movie/genres');
+    if (data.statusCode === 200) {
+      genres.value = data.data;
     }
   } catch (error) {
     console.error("Error fetching genres:", error);
