@@ -91,4 +91,8 @@ const handleLogin = async () => {
     }
 }
 
+definePageMeta({
+    middleware: 'guest'
+})
+
 </script>
