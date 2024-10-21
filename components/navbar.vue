@@ -11,24 +11,15 @@
                 </div>
                 <ul tabIndex="0"
                     class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                    <li>
-                        <NuxtLink to="/">Home</NuxtLink>
+                    <li v-for="(link, index) in links" :key="index">
+                        <NuxtLink :to="link.url">{{ link.text }}</NuxtLink>
                     </li>
                     <li tabIndex="0">
                         <details>
                             <summary>CMS</summary>
                             <ul class="p-2">
-                                <li>
-                                    <NuxtLink to="/cms/movies">Movie List</NuxtLink>
-                                </li>
-                                <li>
-                                    <NuxtLink to="/cms/movies/create">Create New Movie</NuxtLink>
-                                </li>
-                                <li>
-                                    <NuxtLink to="/cms/genres">Genre List</NuxtLink>
-                                </li>
-                                <li>
-                                    <NuxtLink to="/cms/genres/create">Create New Genre</NuxtLink>
+                                <li v-for="(cmsLink, index) in cmsLinks" :key="index">
+                                    <NuxtLink :to="cmsLink.url">{{ cmsLink.text }}</NuxtLink>
                                 </li>
                             </ul>
                         </details>
@@ -42,24 +33,15 @@
         <!-- Start: Navbar for large screens -->
         <div class="navbar-center hidden lg:flex">
             <ul class="menu menu-horizontal px-1">
-                <li>
-                    <NuxtLink to="/">Home</NuxtLink>
+                <li v-for="(link, index) in links" :key="index">
+                    <NuxtLink :to="link.url">{{ link.text }}</NuxtLink>
                 </li>
                 <li>
                     <details>
                         <summary>CMS</summary>
                         <ul class="p-2 w-52">
-                            <li>
-                                <NuxtLink to="/cms/movies">Movie List</NuxtLink>
-                            </li>
-                            <li>
-                                <NuxtLink to="/cms/movies/create">Create New Movie</NuxtLink>
-                            </li>
-                            <li>
-                                <NuxtLink to="/cms/genres">Genre List</NuxtLink>
-                            </li>
-                            <li>
-                                <NuxtLink to="/cms/genres/create">Create New Genre</NuxtLink>
+                            <li v-for="(cmsLink, index) in cmsLinks" :key="index">
+                                <NuxtLink :to="cmsLink.url">{{ cmsLink.text }}</NuxtLink>
                             </li>
                         </ul>
                     </details>
@@ -92,6 +74,19 @@ import { useToast } from 'vue-toastification'
 import { useUserStore } from '~/stores/user';
 import { useLoadingStore } from "~/stores/loading";
 
+// Navbar links data
+const links = ref([
+    { text: 'Home', url: '/' }
+]);
+
+const cmsLinks = ref([
+    { text: 'Add User', url: '/cms/add-user' },
+    { text: 'Movie List', url: '/cms/movies' },
+    { text: 'Create New Movie', url: '/cms/movies/create' },
+    { text: 'Genre List', url: '/cms/genres' },
+    { text: 'Create New Genre', url: '/cms/genres/create' }
+]);
+
 const toast = useToast()
 const isLoggedIn = ref(false)
 const router = useRouter()
@@ -108,7 +103,6 @@ onMounted(() => {
     }
 })
 
-// Handle logout and reset the login state
 // Handle logout and reset the login state
 const handleLogout = async () => {
     try {
