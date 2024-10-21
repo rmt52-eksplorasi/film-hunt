@@ -14,7 +14,7 @@
                     <li v-for="(link, index) in links" :key="index">
                         <NuxtLink :to="link.url">{{ link.text }}</NuxtLink>
                     </li>
-                    <li tabIndex="0">
+                    <li v-if="isLoggedIn" tabIndex="0">
                         <details>
                             <summary>CMS</summary>
                             <ul class="p-2">
@@ -36,7 +36,7 @@
                 <li v-for="(link, index) in links" :key="index">
                     <NuxtLink :to="link.url">{{ link.text }}</NuxtLink>
                 </li>
-                <li>
+                <li v-if="isLoggedIn">
                     <details>
                         <summary>CMS</summary>
                         <ul class="p-2 w-52">

@@ -74,9 +74,8 @@ const handleAddUser = async () => {
         await router.push('/cms');
 
     } catch (error) {
-        console.log(error)
         // Error handling
-        const errorMessage = error?.response?.data?.error || 'Failed to add user'
+        const errorMessage = error?.response?.data?.error || error?.message
 
         // Show error toast
         toast.error(errorMessage)

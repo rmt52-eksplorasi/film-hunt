@@ -81,7 +81,7 @@ const handleLogin = async () => {
         // Get the error message from the API response or default to 'Login failed!'
         const errorMessage = error?.response?.data?.error || 'Login failed!';
         const errorCode = error?.response?.status;
-        console.error('Error:', errorCode, errorMessage);
+        // console.log(error);
 
         // Show an error toast message
         toast.error(`Error: ${errorCode} ${errorMessage}`);
