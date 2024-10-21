@@ -33,8 +33,12 @@ import { ref } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useNuxtApp } from '#app'
 import { useRouter } from 'vue-router'
+import { useUserStore } from "~/stores/user";
+import { useLoadingStore } from "~/stores/loading";
 
 const toast = useToast()
+const userStore = useUserStore()
+const loadingStore = useLoadingStore()
 
 const form = ref({
     email: '',
@@ -47,21 +51,44 @@ const router = useRouter()
 const handleLogin = async () => {
     const { $axios } = useNuxtApp()
     try {
+        // Start loading with a custom message
+        loadingStore.startLoading('Logging in, please wait...');
+
+        // Make an API request to login with email and password
         const response = await $axios.post('/login', {
             email: form.value.email,
             password: form.value.password
-        })
-        // Save token and user email to cookie
-        setCookie('token', response.data.data.access_token, 7)
-        setCookie('userEmail', form.value.email, 7)
-        toast.success(`Login successful, Welcome!`)
+        });
 
-        // Redirect to /
-        await router.push('/')
+        // Extract the token from the API response
+        const userToken = response.data.data.access_token;
+        const userEmail = form.value.email;
+
+        // Store token and email in cookies for 7 days
+        setCookie('token', userToken, 7);
+        setCookie('userEmail', userEmail, 7);
+
+        // Update user data in global state
+        userStore.setUserData(userToken, userEmail);
+
+        // Show a success toast message
+        toast.success(`Login successful, Welcome!`);
+
+        // Redirect to the home page
+        await router.push('/');
+
     } catch (error) {
-        const errorMessage = error?.response?.data?.error || 'Login failed!'
-        console.error('Error:', errorMessage)
-        toast.error(errorMessage)
+        // Get the error message from the API response or default to 'Login failed!'
+        const errorMessage = error?.response?.data?.error || 'Login failed!';
+        console.error('Error:', errorMessage);
+
+        // Show an error toast message
+        toast.error(errorMessage);
+
+    } finally {
+        // Always stop the loading overlay, whether login is successful or not
+        loadingStore.stopLoading();
     }
 }
+
 </script>
