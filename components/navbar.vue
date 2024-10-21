@@ -1,52 +1,84 @@
 <template>
     <div class="navbar bg-base-100">
+        <!-- Start: Navbar for small screens (Hamburger menu) -->
         <div class="navbar-start">
             <div class="dropdown">
-                <div tabIndex={0} role="button" class="btn btn-ghost lg:hidden">
+                <div tabIndex="0" role="button" class="btn btn-ghost lg:hidden">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
                     </svg>
                 </div>
-                <ul tabIndex={0}
+                <ul tabIndex="0"
                     class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                    <li><a>Item 1</a></li>
                     <li>
-                        <a>Parent</a>
-                        <ul class="p-2">
-                            <li><a>Submenu 1</a></li>
-                            <li><a>Submenu 2</a></li>
-                        </ul>
+                        <NuxtLink to="/">Home</NuxtLink>
                     </li>
-                    <li><a>Item 3</a></li>
+                    <li tabIndex="0">
+                        <details>
+                            <summary>CMS</summary>
+                            <ul class="p-2">
+                                <li>
+                                    <NuxtLink to="/cms/movies">Movie List</NuxtLink>
+                                </li>
+                                <li>
+                                    <NuxtLink to="/cms/movies/create">Create New Movie</NuxtLink>
+                                </li>
+                                <li>
+                                    <NuxtLink to="/cms/genres">Genre List</NuxtLink>
+                                </li>
+                                <li>
+                                    <NuxtLink to="/cms/genres/create">Create New Genre</NuxtLink>
+                                </li>
+                            </ul>
+                        </details>
+                    </li>
                 </ul>
             </div>
             <NuxtLink to='/' class="btn btn-ghost text-xl">Film Hunt</NuxtLink>
         </div>
+        <!-- End: Navbar for small screens -->
+
+        <!-- Start: Navbar for large screens -->
         <div class="navbar-center hidden lg:flex">
             <ul class="menu menu-horizontal px-1">
-                <li><a>Item 1</a></li>
+                <li>
+                    <NuxtLink to="/">Home</NuxtLink>
+                </li>
                 <li>
                     <details>
-                        <summary>Parent</summary>
-                        <ul class="p-2">
-                            <li><a>Submenu 1</a></li>
-                            <li><a>Submenu 2</a></li>
+                        <summary>CMS</summary>
+                        <ul class="p-2 w-52">
+                            <li>
+                                <NuxtLink to="/cms/movies">Movie List</NuxtLink>
+                            </li>
+                            <li>
+                                <NuxtLink to="/cms/movies/create">Create New Movie</NuxtLink>
+                            </li>
+                            <li>
+                                <NuxtLink to="/cms/genres">Genre List</NuxtLink>
+                            </li>
+                            <li>
+                                <NuxtLink to="/cms/genres/create">Create New Genre</NuxtLink>
+                            </li>
                         </ul>
                     </details>
                 </li>
-                <li><a>Item 3</a></li>
             </ul>
         </div>
+        <!-- End: Navbar for large screens -->
+
+        <!-- Start: Login/Logout buttons -->
         <div class="navbar-end">
             <template v-if="isLoggedIn">
-                <p class="text-gray-700 font-semibold mr-2">Logged in as: </p>
+                <p class="text-gray-700 font-semibold mr-2">Logged in as:</p>
                 <button class="btn btn-error btn-outline" @click="handleLogout">Logout</button>
             </template>
             <template v-else>
                 <NuxtLink class="btn btn-accent" to="/login">Login</NuxtLink>
             </template>
         </div>
+        <!-- End: Login/Logout buttons -->
     </div>
 </template>
 
@@ -59,6 +91,7 @@ const toast = useToast()
 const isLoggedIn = ref(false)
 const router = useRouter()
 
+// Check if the user is logged in by verifying the token in cookies
 onMounted(() => {
     const token = getCookie('token')
     if (token) {
@@ -66,6 +99,7 @@ onMounted(() => {
     }
 })
 
+// Handle logout and reset the login state
 const handleLogout = () => {
     deleteCookie('token')
     deleteCookie('userEmail')
