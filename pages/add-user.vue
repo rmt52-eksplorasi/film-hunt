@@ -95,4 +95,9 @@ const handleAddUser = async () => {
         loadingStore.stopLoading();
     }
 }
+
+definePageMeta({
+    middleware: 'auth'
+})
+
 </script>
