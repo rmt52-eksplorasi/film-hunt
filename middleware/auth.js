@@ -1,9 +1,9 @@
-import { useUserStore } from "~/stores/user";
-
-export default defineNuxtRouteMiddleware(() => {
-    const userStore = useUserStore();
-    console.log(userStore, "<<<<<<");
-    if(!userStore.token) {
-        return navigateTo('/login');
+export default defineNuxtRouteMiddleware((to, from) => {
+  const req = useRequestHeaders();
+  const token = getCookie("token", req);
+//   if (process.client) {
+    if (!token) {
+      return navigateTo("/login");
     }
+//   }
 });

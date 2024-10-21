@@ -91,9 +91,4 @@ const handleLogin = async () => {
         loadingStore.stopLoading();
     }
 }
-
-definePageMeta({
-    middleware: 'guest'
-})
-
 </script>
