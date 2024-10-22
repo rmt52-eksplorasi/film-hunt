@@ -483,4 +483,9 @@ onMounted(() => {
     fetchMovies();
     sortMovies('id');
 });
+
+definePageMeta({
+    middleware: 'auth'
+})
+
 </script>
