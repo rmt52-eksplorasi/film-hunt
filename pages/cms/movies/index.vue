@@ -62,7 +62,7 @@
                         <!-- Edit and Delete Buttons -->
                         <td class="text-center">
                             <!-- Edit Button with Pencil Icon -->
-                            <button @click="editMovie(movie.id)"
+                            <button @click="openEditModal(movie)"
                                 class="btn btn-sm btn-primary mb-2 flex items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor" class="w-5 h-5">
@@ -149,6 +149,55 @@
                 <div class="modal-action">
                     <button type="submit" class="btn btn-primary mr-2">Submit</button>
                     <a @click="closeModal" class="btn">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Editing Movie -->
+    <div v-if="showEditModal" class="fixed inset-0 z-50 flex items-center justify-center">
+        <div class="fixed inset-0 bg-black opacity-50"></div>
+        <div class="relative bg-white p-6 rounded-lg z-50 w-96">
+            <h3 class="text-lg font-bold mb-4">Edit Movie</h3>
+
+            <!-- Form for Editing Movie -->
+            <form @submit.prevent="submitEditMovie">
+                <!-- Title -->
+                <div class="form-control mb-4">
+                    <label class="label">
+                        <span class="label-text">Title</span>
+                    </label>
+                    <input type="text" v-model="editMovieData.title" class="input input-bordered w-full" />
+                </div>
+
+                <!-- Synopsis -->
+                <div class="form-control mb-4">
+                    <label class="label">
+                        <span class="label-text">Synopsis</span>
+                    </label>
+                    <textarea v-model="editMovieData.synopsis" class="textarea textarea-bordered w-full"></textarea>
+                </div>
+
+                <!-- Trailer URL -->
+                <div class="form-control mb-4">
+                    <label class="label">
+                        <span class="label-text">Trailer URL</span>
+                    </label>
+                    <input type="text" v-model="editMovieData.trailerUrl" class="input input-bordered w-full" />
+                </div>
+
+                <!-- Rating -->
+                <div class="form-control mb-4">
+                    <label class="label">
+                        <span class="label-text">Rating</span>
+                    </label>
+                    <input type="number" v-model="editMovieData.rating" class="input input-bordered w-full" min="0" max="10" />
+                </div>
+
+                <!-- Modal Action Buttons -->
+                <div class="modal-action">
+                    <button type="submit" class="btn btn-primary mr-2">Save Changes</button>
+                    <button @click="closeEditModal" class="btn">Cancel</button>
                 </div>
             </form>
         </div>
@@ -339,10 +388,57 @@ const submitImage = async () => {
     }
 };
 
-const editMovie = (movie) => {
-    // Open the edit modal logic here
+const showEditModal = ref(false);
+const editMovieData = ref({
+    id: null,
+    title: '',
+    synopsis: '',
+    trailerUrl: '',
+    rating: null
+});
 
+const openEditModal = (movie) => {
+    editMovieData.value = { ...movie }; // Copy the movie data to the editMovieData state
+    showEditModal.value = true;
 };
+
+const closeEditModal = () => {
+    showEditModal.value = false;
+    editMovieData.value = { id: null, title: '', synopsis: '', trailerUrl: '', rating: null };
+};
+
+const submitEditMovie = async () => {
+    try {
+        loadingStore.startLoading('Updating movie, please wait...');
+
+        // Pastikan untuk mempassing genreId dan imgUrl bersama dengan data yang diubah
+        const updatedMovieData = {
+            title: editMovieData.value.title,
+            synopsis: editMovieData.value.synopsis,
+            trailerUrl: editMovieData.value.trailerUrl,
+            rating: editMovieData.value.rating,
+            genreId: editMovieData.value.genreId,  // Include genreId
+            imgUrl: editMovieData.value.imgUrl     // Include imgUrl
+        };
+
+        // Send a PUT request to update the movie
+        await $axios.put(`/movie/movies/${editMovieData.value.id}`, updatedMovieData, {
+            headers: {
+                Authorization: `Bearer ${userStore.token}`,  // Include the authorization token
+            },
+        });
+
+        toast.success('Movie updated successfully.');
+        closeEditModal(); // Close the modal after successful update
+        fetchMovies();   // Refresh the movie list to show updated movie
+    } catch (error) {
+        console.error(error);  // Log any errors
+        toast.error('Failed to update movie.');
+    } finally {
+        loadingStore.stopLoading();  // Stop the loading overlay
+    }
+};
+
 
 const showDeleteModal = ref(false);  // State to show/hide delete confirmation modal
 const movieToDelete = ref(null);     // Holds the movie to delete
