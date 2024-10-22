@@ -91,7 +91,7 @@ const cmsLinks = ref([
     { text: 'Movie List', url: '/cms/movies' },
     { text: 'Create New Movie', url: '/cms/movies/create' },
     { text: 'Genre List', url: '/cms/genres' },
-    { text: 'Create New Genre', url: '/cms/genres/create' }
+    // { text: 'Create New Genre', url: '/cms/genres/create' }
 ]);
 
 const toast = useToast()
