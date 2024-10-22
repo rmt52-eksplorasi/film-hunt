@@ -2,19 +2,19 @@
   <div class="flex flex-col items-center min-h-screen bg-gray-100">
     <h1 class="text-3xl font-bold text-center text-gray-700 mb-6 mt-3">Welcome to Film Hunt!</h1>
 
-    <div class="mb-4 w-full sm:w-auto">
+    <div class="mb-4 w-auto">
       <input v-model="searchQuery" type="text" placeholder="Search movies by title..." class="p-2 border border-gray-300 rounded w-full md:w-96" />
     </div>
 
-    <div class="mb-4 flex flex-wrap gap-3 w-full sm:w-auto">
-      <div class="min-w-[200px]">
+    <div class="mb-4 flex flex-wrap gap-3 w-auto justify-center">
+      <div class="min-w-[200px] w-[80%] sm:w-auto">
         <label for="genreFilter" class="text-lg font-semibold text-gray-700 mr-2">Filter by Genre:</label>
         <select id="genreFilter" v-model="selectedGenreId" class="p-2 border border-gray-300 rounded w-full">
           <option value="">All Genres</option>
           <option v-for="genre in genres" :key="genre.id">{{ genre.name }}</option>
         </select>
       </div>
-      <div class="min-w-[200px]">
+      <div class="min-w-[200px] w-[80%] sm:w-auto">
         <label for="sortOrder" class="text-lg font-semibold text-gray-700 mr-2">Sort by Rating:</label>
         <select id="sortOrder" v-model="sortOrder" class="p-2 border border-gray-300 rounded w-full">
           <option value="asc">Ascending</option>
@@ -23,9 +23,20 @@
       </div>
     </div>
 
-    <div v-if="movies.length === 0" class="text-center text-gray-500">Loading movies...</div>
+    <!-- Kondisi jika tidak ada film yang ditemukan -->
+    <div v-if="movies.length === 0 && !isLoading" class="text-center text-gray-500">Movie not found</div>
+    
+    <!-- Loading indicator jika film masih loading -->
+    <div v-if="movies.length === 0 && isLoading" class="text-center text-gray-500">Loading movies...</div>
+    
+    <!-- Menampilkan film jika ada -->
     <div v-else class="flex flex-wrap justify-center gap-3 my-3 w-full sm:w-auto">
-      <MovieCard v-for="movie in movies" :key="movie.id" :movie="movie" class="min-w-[200px]" />
+      <MovieCard
+        v-for="movie in movies"
+        :key="movie.id"
+        :movie="movie"
+        :class="[{ 'flex-1': movies.length === 1 }, 'min-w-[200px]']"
+      />
     </div>
 
     <div class="my-6 flex gap-4">
@@ -47,11 +58,13 @@ const sortOrder = ref('asc');
 const limit = ref(10);
 const page = ref(1);
 const totalPages = ref(0);
+const isLoading = ref(false);
 
 const { $axios } = useNuxtApp();
 
 const fetchMovies = async () => {
   try {
+    isLoading.value = true;
     const params = {
       q: searchQuery.value || '',
       i: selectedGenreId.value || '',
@@ -66,6 +79,8 @@ const fetchMovies = async () => {
     }
   } catch (error) {
     console.error("Error fetching movies:", error);
+  } finally {
+    isLoading.value = false;
   }
 };
 
