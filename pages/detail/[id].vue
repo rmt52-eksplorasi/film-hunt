@@ -13,6 +13,9 @@
           <div>
             <p class="text-lg">{{ movie.synopsis }}</p>
             <p class="text-lg"><strong>Rating:</strong> {{ movie.rating }}⭐</p>
+            <p class="text-lg mt-2">
+              <a :href="movie.trailerUrl" target="_blank"> Watch Trailer Here!</a>
+            </p>
           </div>
           <div class="mt-4">
             <NuxtLink to="/" class="text-lg rounded-md bg-gray-300 hover:bg-gray-200 p-2 font-bold">Go back</NuxtLink>
