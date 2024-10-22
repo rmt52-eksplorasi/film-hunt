@@ -31,7 +31,12 @@
     
     <!-- Menampilkan film jika ada -->
     <div v-else class="flex flex-wrap justify-center gap-3 my-3 w-full sm:w-auto">
-      <MovieCard v-for="movie in movies" :key="movie.id" :movie="movie" class="min-w-[200px]" />
+      <MovieCard
+        v-for="movie in movies"
+        :key="movie.id"
+        :movie="movie"
+        :class="[{ 'flex-1': movies.length === 1 }, 'min-w-[200px]']"
+      />
     </div>
 
     <div class="my-6 flex gap-4">
