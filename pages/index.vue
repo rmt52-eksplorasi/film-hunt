@@ -23,7 +23,13 @@
       </div>
     </div>
 
-    <div v-if="movies.length === 0" class="text-center text-gray-500">Loading movies...</div>
+    <!-- Kondisi jika tidak ada film yang ditemukan -->
+    <div v-if="movies.length === 0 && !isLoading" class="text-center text-gray-500">Movie not found</div>
+    
+    <!-- Loading indicator jika film masih loading -->
+    <div v-if="movies.length === 0 && isLoading" class="text-center text-gray-500">Loading movies...</div>
+    
+    <!-- Menampilkan film jika ada -->
     <div v-else class="flex flex-wrap justify-center gap-3 my-3 w-full sm:w-auto">
       <MovieCard v-for="movie in movies" :key="movie.id" :movie="movie" class="min-w-[200px]" />
     </div>
@@ -47,11 +53,13 @@ const sortOrder = ref('asc');
 const limit = ref(10);
 const page = ref(1);
 const totalPages = ref(0);
+const isLoading = ref(false);
 
 const { $axios } = useNuxtApp();
 
 const fetchMovies = async () => {
   try {
+    isLoading.value = true;
     const params = {
       q: searchQuery.value || '',
       i: selectedGenreId.value || '',
@@ -66,6 +74,8 @@ const fetchMovies = async () => {
     }
   } catch (error) {
     console.error("Error fetching movies:", error);
+  } finally {
+    isLoading.value = false;
   }
 };
 
