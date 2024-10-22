@@ -2,7 +2,7 @@
     <div>
         <Navbar v-if="!isLoginPage" />
         <NuxtPage :key="route.fullPath" />
-        <Loading :isLoading="loadingStore.isLoading" />
+        <Loading :isLoading="loadingStore.isLoading" :message="loadingStore.message" />
     </div>
 </template>
 
