@@ -2,19 +2,19 @@
   <div class="flex flex-col items-center min-h-screen bg-gray-100">
     <h1 class="text-3xl font-bold text-center text-gray-700 mb-6 mt-3">Welcome to Film Hunt!</h1>
 
-    <div class="mb-4 w-full sm:w-auto">
+    <div class="mb-4 w-auto">
       <input v-model="searchQuery" type="text" placeholder="Search movies by title..." class="p-2 border border-gray-300 rounded w-full md:w-96" />
     </div>
 
-    <div class="mb-4 flex flex-wrap gap-3 w-full sm:w-auto">
-      <div class="min-w-[200px]">
+    <div class="mb-4 flex flex-wrap gap-3 w-auto justify-center">
+      <div class="min-w-[200px] w-[80%] sm:w-auto">
         <label for="genreFilter" class="text-lg font-semibold text-gray-700 mr-2">Filter by Genre:</label>
         <select id="genreFilter" v-model="selectedGenreId" class="p-2 border border-gray-300 rounded w-full">
           <option value="">All Genres</option>
           <option v-for="genre in genres" :key="genre.id">{{ genre.name }}</option>
         </select>
       </div>
-      <div class="min-w-[200px]">
+      <div class="min-w-[200px] w-[80%] sm:w-auto">
         <label for="sortOrder" class="text-lg font-semibold text-gray-700 mr-2">Sort by Rating:</label>
         <select id="sortOrder" v-model="sortOrder" class="p-2 border border-gray-300 rounded w-full">
           <option value="asc">Ascending</option>
