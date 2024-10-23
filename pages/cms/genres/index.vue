@@ -69,8 +69,7 @@
                         <input type="text" v-model="newGenre.name" placeholder="Genre Name"
                             class="px-4 py-3 w-full text-sm outline-none border-b-2 border-transparent focus:border-blue-500 rounded mb-4" />
 
-                        <button type="submit"
-                            class="!mt-8 w-full px-4 py-2.5 mx-auto block text-sm btn btn-primary">
+                        <button type="submit" class="!mt-8 w-full px-4 py-2.5 mx-auto block text-sm btn btn-primary">
                             Add Genre
                         </button>
                     </form>
@@ -162,6 +161,13 @@ const fetchGenres = async () => {
 
 onMounted(() => {
     fetchGenres();
+    useHead({
+        title: 'Genres List - Film Hunt',
+        meta: [
+            { name: 'description', content: 'Explore a vast collection of movies, discover new favorites, and keep track of what you want to watch next with Film Hunt.' },
+            { property: 'og:image', content: '/icon3.png' },
+        ],
+    });
 });
 
 definePageMeta({

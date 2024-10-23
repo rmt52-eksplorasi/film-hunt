@@ -43,6 +43,18 @@ onMounted(async () => {
     const response = await $axios.get(`/pub/movie/movies/${id}`);
     if (response.data.statusCode === 200) {
       movie.value = response.data.data;
+      useHead({
+        title: `${movie.value.title} - Film Hunt`,
+        meta: [
+          {
+            name: 'description',
+            content: movie.value.synopsis,
+          },
+          {
+            property: 'og:image', content: movie.value.imgUrl,
+          }
+        ],
+      });
     } else {
       console.error("Error fetching movie:", response.data.message);
     }
