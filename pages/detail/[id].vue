@@ -42,6 +42,7 @@ async function fetchMovie() {
     const response = await $axios.get(`/pub/movie/movies/${id}`);
     if (response.data.statusCode === 200) {
       movie.value = response.data.data;
+      return movie.value;
     } else {
       console.error("Error fetching movie:", response.data.message);
     }
@@ -68,18 +69,19 @@ async function setMeta() {
   }
 }
 
-// Set initial meta values before the movie data is fetched
+const metadata = await fetchMovie();
 useHead({
-  title: 'Loading Movie - Film Hunt',
+  title: `${metadata.title} - Film Hunt`,
   meta: [
-    { name: 'description', content: 'Movie details coming soon' },
-    { property: 'og:title', content: 'Loading Movie - Film Hunt' },
-    { property: 'og:description', content: 'Movie details coming soon' },
-    { property: 'og:image', content: '/../../icon3.png' },
+    { name: 'description', content: metadata.synopsis },
+    { property: 'og:title', content: `${metadata.title} - Film Hunt` },
+    { property: 'og:description', content: metadata.synopsis },
+    { property: 'og:image', content: metadata.imgUrl },
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:image', content: '/../../icon3.png' }
+    { name: 'twitter:image', content: metadata.imgUrl }
   ]
 });
+
 
 onMounted(setMeta);
 </script>
