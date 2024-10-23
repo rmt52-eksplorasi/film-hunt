@@ -37,29 +37,49 @@ const id = route.params.id;
 const movie = ref(null);
 const { $axios } = useNuxtApp();
 
-onMounted(async () => {
+async function fetchMovie() {
   try {
-    // fetching detail movie by id
     const response = await $axios.get(`/pub/movie/movies/${id}`);
     if (response.data.statusCode === 200) {
       movie.value = response.data.data;
-      useHead({
-        title: `${movie.value.title} - Film Hunt`,
-        meta: [
-          {
-            name: 'description',
-            content: movie.value.synopsis,
-          },
-          {
-            property: 'og:image', content: movie.value.imgUrl,
-          }
-        ],
-      });
     } else {
       console.error("Error fetching movie:", response.data.message);
     }
   } catch (error) {
     console.error("Error fetching movie:", error);
   }
+}
+
+// Set meta values dynamically after fetching movie data
+async function setMeta() {
+  await fetchMovie();
+  if (movie.value) {
+    useHead({
+      title: `${movie.value.title} - Film Hunt`,
+      meta: [
+        { name: 'description', content: movie.value.synopsis },
+        { property: 'og:title', content: `${movie.value.title} - Film Hunt` },
+        { property: 'og:description', content: movie.value.synopsis },
+        { property: 'og:image', content: movie.value.imgUrl },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:image', content: movie.value.imgUrl }
+      ]
+    });
+  }
+}
+
+// Set initial meta values before the movie data is fetched
+useHead({
+  title: 'Loading Movie - Film Hunt',
+  meta: [
+    { name: 'description', content: 'Movie details coming soon' },
+    { property: 'og:title', content: 'Loading Movie - Film Hunt' },
+    { property: 'og:description', content: 'Movie details coming soon' },
+    { property: 'og:image', content: '/../../icon3.png' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:image', content: '/../../icon3.png' }
+  ]
 });
+
+onMounted(setMeta);
 </script>
