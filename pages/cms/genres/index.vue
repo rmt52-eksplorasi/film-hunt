@@ -160,13 +160,18 @@ const fetchGenres = async () => {
 
 onMounted(() => {
     fetchGenres();
-    useHead({
-        title: 'Genres List - Film Hunt',
-        meta: [
-            { name: 'description', content: 'Explore a vast collection of movies, discover new favorites, and keep track of what you want to watch next with Film Hunt.' },
-            { property: 'og:image', content: '/icon3.png' },
-        ],
-    });
+});
+
+useHead({
+    title: 'Genres List - Film Hunt',
+    meta: [
+        { name: 'description', content: 'Explore a vast collection of movies, discover new favorites, and keep track of what you want to watch next with Film Hunt.' },
+        { property: 'og:image', content: '/icon3.png' },
+        { property: 'og:title', content: 'Discover Your Favorite Movies' },
+        { property: 'og:description', content: 'Explore movies.' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:image', content: '/icon3.png' },
+    ],
 });
 
 definePageMeta({
