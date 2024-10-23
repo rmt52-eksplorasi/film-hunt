@@ -8,14 +8,17 @@
         </figure>
         <div class="card-body md:w-2/3 flex flex-col">
           <div>
-            <a class="text-lg rounded-lg bg-gray-300 p-1.5 font-bold">{{ movie.Genre.name }}</a>
+            <a class="text-lg rounded-lg bg-base-300 p-1.5 font-bold">{{ movie.Genre.name }}</a>
           </div>
           <div>
             <p class="text-lg">{{ movie.synopsis }}</p>
             <p class="text-lg"><strong>Rating:</strong> {{ movie.rating }}⭐</p>
+            <p class="text-lg mt-2">
+              <a :href="movie.trailerUrl" target="_blank"> Watch Trailer Here!</a>
+            </p>
           </div>
           <div class="mt-4">
-            <NuxtLink to="/" class="text-lg rounded-md bg-gray-300 hover:bg-gray-200 p-2 font-bold">Go back</NuxtLink>
+            <NuxtLink to="/" class="text-lg rounded-md btn btn-outline btn-primary p-2 font-bold">Go back</NuxtLink>
           </div>
         </div>
       </div>
@@ -34,17 +37,51 @@ const id = route.params.id;
 const movie = ref(null);
 const { $axios } = useNuxtApp();
 
-onMounted(async () => {
+async function fetchMovie() {
   try {
-    // fetching detail movie by id
     const response = await $axios.get(`/pub/movie/movies/${id}`);
     if (response.data.statusCode === 200) {
       movie.value = response.data.data;
+      return movie.value;
     } else {
       console.error("Error fetching movie:", response.data.message);
     }
   } catch (error) {
     console.error("Error fetching movie:", error);
   }
+}
+
+// Set meta values dynamically after fetching movie data
+async function setMeta() {
+  await fetchMovie();
+  if (movie.value) {
+    useHead({
+      title: `${movie.value.title} - Film Hunt`,
+      meta: [
+        { name: 'description', content: movie.value.synopsis },
+        { property: 'og:title', content: `${movie.value.title} - Film Hunt` },
+        { property: 'og:description', content: movie.value.synopsis },
+        { property: 'og:image', content: movie.value.imgUrl },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:image', content: movie.value.imgUrl }
+      ]
+    });
+  }
+}
+
+const metadata = await fetchMovie();
+useHead({
+  title: `${metadata.title} - Film Hunt`,
+  meta: [
+    { name: 'description', content: metadata.synopsis },
+    { property: 'og:title', content: `${metadata.title} - Film Hunt` },
+    { property: 'og:description', content: metadata.synopsis },
+    { property: 'og:image', content: metadata.imgUrl },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:image', content: metadata.imgUrl }
+  ]
 });
+
+
+onMounted(setMeta);
 </script>

@@ -2,8 +2,8 @@ import { defineStore } from "pinia";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
-    token: null,
-    email: null,
+    token: getCookie("token") || null,
+    email: getCookie("userEmail") || null,
   }),
   actions: {
     setUserData(token, email) {

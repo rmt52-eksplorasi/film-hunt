@@ -1,19 +1,18 @@
-import Cookies from "universal-cookie";
-
 export function setCookie(name, value, days) {
-  const cookies = new Cookies();
   const options = days
-    ? { path: "/", expires: new Date(Date.now() + days * 864e5) }
-    : { path: "/" };
-  cookies.set(name, value, options);
+  ? { maxAge: days * 86400, path: "/" } // maxAge in seconds, not milliseconds
+  : { path: "/" };
+  const cookie = useCookie(name,options);
+  // Set the cookie value and options
+  cookie.value = value;
 }
 
 export function getCookie(name) {
-  const cookies = new Cookies();
-  return cookies.get(name);
+  const cookie = useCookie(name);
+  return cookie.value;
 }
 
 export function deleteCookie(name) {
-  const cookies = new Cookies();
-  cookies.remove(name, { path: "/" });
+  const cookie = useCookie(name);
+  cookie.value = null; // Setting value to null deletes the cookie
 }

@@ -10,17 +10,14 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@nuxtjs/axios": "^5.13.6",
+    "@nuxt/image": "^1.8.1",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@pinia/nuxt": "^0.5.5",
     "axios": "^1.7.7",
     "daisyui": "^4.12.13",
     "nuxt": "^3.13.0",
     "pinia": "^2.2.4",
-    "sonner": "^1.5.0",
-    "universal-cookie": "^7.2.1",
     "vue": "latest",
-    "vue-router": "latest",
-    "vue-toastification": "^2.0.0-rc.5"
+    "vue-sonner": "^1.2.3"
   }
 }

@@ -1,7 +1,14 @@
 <template>
-    <div class="flex justify-center items-center min-h-screen bg-gray-100">
-        <div class="w-full max-w-md p-8 space-y-4 bg-white shadow-md rounded-lg">
-            <h2 class="text-2xl font-bold text-center text-gray-700">Login</h2>
+    <div class="flex justify-center items-center min-h-screen bg-base-100">
+        <div class="w-full max-w-md p-8 space-y-4 bg-base-100 shadow-md rounded-lg">
+            <div class="text-center flex">
+                <NuxtLink to="/" class="mx-auto">
+                    <NuxtImg src="/icon1.png" alt="Icon"
+                        class="drop-shadow-[0_0_1px_rgba(255,255,255,1)] w-[250px] h-[50px] object-cover rounded-lg" />
+                </NuxtLink>
+            </div>
+
+            <h2 class="text-2xl font-bold text-center">Login</h2>
 
             <form @submit.prevent="handleLogin">
                 <div class="form-control">
@@ -30,13 +37,12 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useToast } from 'vue-toastification'
+import { toast } from 'vue-sonner'
 import { useNuxtApp } from '#app'
 import { useRouter } from 'vue-router'
 import { useUserStore } from "~/stores/user";
 import { useLoadingStore } from "~/stores/loading";
 
-const toast = useToast()
 const userStore = useUserStore()
 const loadingStore = useLoadingStore()
 
@@ -45,11 +51,11 @@ const form = ref({
     password: ''
 })
 
+const { $axios } = useNuxtApp()
 const router = useRouter()
 
 // Handle login
 const handleLogin = async () => {
-    const { $axios } = useNuxtApp()
     try {
         // Start loading with a custom message
         loadingStore.startLoading('Logging in, please wait...');
@@ -80,15 +86,32 @@ const handleLogin = async () => {
     } catch (error) {
         // Get the error message from the API response or default to 'Login failed!'
         const errorMessage = error?.response?.data?.error || 'Login failed!';
-        console.error('Error:', errorMessage);
+        const errorCode = error?.response?.status;
+        // console.log(error);
 
         // Show an error toast message
-        toast.error(errorMessage);
+        toast.error(`Error: ${errorCode} ${errorMessage}`);
 
     } finally {
         // Always stop the loading overlay, whether login is successful or not
         loadingStore.stopLoading();
     }
 }
+
+definePageMeta({
+    middleware: 'guest'
+});
+
+useHead({
+    title: 'Login - Film Hunt',
+    meta: [
+        { name: 'description', content: 'Explore a vast collection of movies, discover new favorites, and keep track of what you want to watch next with Film Hunt.' },
+        { property: 'og:image', content: '/icon3.png' },
+        { property: 'og:title', content: 'Discover Your Favorite Movies' },
+        { property: 'og:description', content: 'Explore movies.' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:image', content: '/icon3.png' },
+    ],
+});
 
 </script>
