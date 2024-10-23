@@ -30,6 +30,7 @@
     <div v-if="movies.length === 0 && isLoading" class="text-center text-gray-500">Loading movies...</div>
     
     <!-- Menampilkan film jika ada -->
+<<<<<<< Updated upstream
     <div v-else class="flex flex-wrap justify-center gap-3 my-3 w-full sm:w-auto">
       <MovieCard
         v-for="movie in movies"
@@ -37,6 +38,11 @@
         :movie="movie"
         :class="[{ 'flex-1': movies.length === 1 }, 'min-w-[200px]']"
       />
+=======
+    <div v-else class="flex flex-wrap justify-center gap-3 my-3 w-auto">
+      <MovieCard v-for="movie in movies" :key="movie.id" :movie="movie"
+      class="" />
+>>>>>>> Stashed changes
     </div>
 
     <div class="my-6 flex gap-4">

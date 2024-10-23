@@ -1,9 +1,9 @@
 <template>
-  <div class="card card-side bg-base-100 shadow-xl p-4 w-[90%] md:w-[45%] min-w-sm">
-    <figure class="w-1/4">
+  <div class="card card-side bg-base-100 shadow-xl p-4 sm:w-[640px] w-[370px]">
+    <figure class="w-[160px]">
       <img :src="movie.imgUrl" :alt="movie.title" class="rounded-lg"/>
     </figure>
-    <div class="card-body w-3/4">
+    <div class="card-body w-[480px] sm:py-auto py-0">
       <h2 class="card-title text-lg font-bold">{{ movie.title }}</h2>
       <p class="text-sm">Rating: {{ movie.rating }}</p>
       <p class="text-sm">Genre: {{ movie.Genre.name }}</p>
