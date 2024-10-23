@@ -1,11 +1,13 @@
 <template>
     <div class="container mx-auto py-10">
-        <h1 class="text-3xl font-bold mb-6 mx-10">Movies List</h1>
+        <h1 class="text-3xl font-bold mb-6 text-center">Movies List</h1>
 
         <!-- Search Bar -->
-        <div class="mb-4">
-            <input type="text" v-model="searchQuery" placeholder="Search by title or synopsis..."
-                class="input input-bordered w-full" />
+        <div class="mb-4 flex">
+            <div class="sm:w-1/4 w-3/4 mx-auto">
+                <input type="text" v-model="searchQuery" placeholder="Search by title or synopsis..."
+                    class="input input-bordered w-full text-center" />
+            </div>
         </div>
 
         <!-- DaisyUI Table -->
@@ -37,7 +39,7 @@
                         <td>{{ movie.title }}</td>
 
                         <!-- Synopsis Column with expanding height and truncation -->
-                        <td class="max-h-32 overflow-hidden">
+                        <td>
                             <div class="overflow-y-hidden max-h-32 line-clamp-6">
                                 {{ movie.synopsis }}
                             </div>
@@ -90,14 +92,16 @@
         <!-- Pagination Controls -->
         <div class="mt-6 flex justify-center items-center">
             <button class="btn btn-sm" :disabled="currentPage === 1" @click="changePage(currentPage - 1)">
-                Previous
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
             </button>
 
             <!-- Sibling Pages -->
             <div class="flex items-center mx-4">
                 <!-- Display Page 1 if not on the first page -->
-                <span @click="changePage(1)"
-                    :class="{ 'btn-primary text-white': 1 === currentPage, 'cursor-pointer': page !== currentPage }"
+                <span @click="changePage(1)" :class="{ 'btn-primary text-white': 1 === currentPage }"
                     class="btn btn-sm mx-1">
                     1
                 </span>
@@ -117,14 +121,16 @@
 
                 <!-- Display the last page number if not on the last page -->
                 <span v-if="currentPage <= totalPages" @click="changePage(totalPages)"
-                    :class="{ 'btn-primary text-white': totalPages === currentPage, 'cursor-pointer': page !== currentPage }"
-                    class="btn btn-sm mx-1">
+                    :class="{ 'btn-primary text-white': totalPages === currentPage }" class="btn btn-sm mx-1">
                     {{ totalPages }}
                 </span>
             </div>
 
             <button class="btn btn-sm" :disabled="currentPage === totalPages" @click="changePage(currentPage + 1)">
-                Next
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
             </button>
         </div>
 
@@ -136,7 +142,7 @@
         <div class="fixed inset-0 bg-black opacity-50 z-40"></div>
 
         <!-- Modal Box -->
-        <div class="relative bg-white p-6 rounded-lg z-50 w-96">
+        <div class="relative bg-base-100 p-6 rounded-lg z-50 w-96">
             <h3 class="text-lg font-bold">Change Image for {{ selectedMovie.title }}</h3>
             <form @submit.prevent="submitImage">
                 <div class="form-control my-4">
@@ -157,7 +163,7 @@
     <!-- Modal for Editing Movie -->
     <div v-if="showEditModal" class="fixed inset-0 z-50 flex items-center justify-center">
         <div class="fixed inset-0 bg-black opacity-50"></div>
-        <div class="relative bg-white p-6 rounded-lg z-50 w-96">
+        <div class="relative bg-base-100 p-6 rounded-lg z-50 w-96">
             <h3 class="text-lg font-bold mb-4">Edit Movie</h3>
 
             <!-- Form for Editing Movie -->
@@ -191,7 +197,8 @@
                     <label class="label">
                         <span class="label-text">Rating</span>
                     </label>
-                    <input type="number" v-model="editMovieData.rating" class="input input-bordered w-full" min="0" max="10" />
+                    <input type="number" v-model="editMovieData.rating" class="input input-bordered w-full" min="0"
+                        max="10" />
                 </div>
 
                 <!-- Modal Action Buttons -->
@@ -207,7 +214,7 @@
     <div v-if="showDeleteModal" class="fixed inset-0 z-50 flex items-center justify-center">
         <div class="fixed inset-0 bg-black opacity-50"></div>
 
-        <div class="relative bg-white p-6 rounded-lg z-50 w-96">
+        <div class="relative bg-base-100 p-6 rounded-lg z-50 w-96">
             <h3 class="text-lg font-bold mb-4">Confirm Deletion</h3>
             <p>Are you sure you want to delete this movie?</p>
             <div class="modal-action">
@@ -339,8 +346,8 @@ const fetchMovies = async () => {
         });
         movies.value = response.data.data;  // Assign the fetched data to movies state
     } catch (error) {
-        console.error(error);
-        toast.error('Failed to fetch movies.');
+        const errorMessages = error?.response?.data?.error || 'Failed to fetch movies.';
+        toast.error(errorMessages);  // Display error message
     } finally {
         loadingStore.stopLoading();
     }
@@ -381,8 +388,8 @@ const submitImage = async () => {
         closeModal();  // Close the modal after successful image update
         fetchMovies();  // Refresh the movie list to show updated image
     } catch (error) {
-        console.error(error);  // Log any errors to the console
-        toast.error('Failed to update image.');  // Display error message
+        const errorMessages = error?.response?.data?.error || 'Failed to update image.';
+        toast.error(errorMessages);  // Display error message
     } finally {
         loadingStore.stopLoading();  // Stop the loading overlay
     }
@@ -411,7 +418,7 @@ const submitEditMovie = async () => {
     try {
         loadingStore.startLoading('Updating movie, please wait...');
 
-        // Pastikan untuk mempassing genreId dan imgUrl bersama dengan data yang diubah
+        // Prepare the updated movie data
         const updatedMovieData = {
             title: editMovieData.value.title,
             synopsis: editMovieData.value.synopsis,
@@ -432,8 +439,8 @@ const submitEditMovie = async () => {
         closeEditModal(); // Close the modal after successful update
         fetchMovies();   // Refresh the movie list to show updated movie
     } catch (error) {
-        console.error(error);  // Log any errors
-        toast.error('Failed to update movie.');
+        const errorMessages = error?.response?.data?.error || 'Failed to update movie.';
+        toast.error(errorMessages);  // Display error message
     } finally {
         loadingStore.stopLoading();  // Stop the loading overlay
     }
@@ -471,8 +478,8 @@ const confirmDelete = async () => {
         toast.success('Movie deleted successfully.');  // Display success message
         fetchMovies();  // Refresh the movie list after successful deletion
     } catch (error) {
-        console.error(error);  // Log any errors to the console
-        toast.error('Failed to delete movie.');  // Display error message
+        const errorMessages = error?.response?.data?.error || 'Failed to delete movie.';
+        toast.error(errorMessages);  // Display error message
     } finally {
         loadingStore.stopLoading();  // Stop the loading overlay
     }

@@ -1,7 +1,13 @@
 <template>
-    <div class="flex justify-center items-center min-h-screen bg-gray-100">
-        <div class="w-full max-w-md p-8 space-y-4 bg-white shadow-md rounded-lg">
-            <h2 class="text-2xl font-bold text-center text-gray-700">Login</h2>
+    <div class="flex justify-center items-center min-h-screen bg-base-100">
+        <div class="w-full max-w-md p-8 space-y-4 bg-base-100 shadow-md rounded-lg">
+            <div class="text-center flex">
+                <NuxtLink to="/" class="mx-auto">
+                    <NuxtImg src="/icon1.png" alt="Icon" class="drop-shadow-[0_0_1px_rgba(255,255,255,1)] w-[250px] h-[50px] object-cover rounded-lg" />
+                </NuxtLink>
+            </div>
+
+            <h2 class="text-2xl font-bold text-center">Login</h2>
 
             <form @submit.prevent="handleLogin">
                 <div class="form-control">
@@ -93,7 +99,7 @@ const handleLogin = async () => {
 }
 
 definePageMeta({
-  middleware: 'guest'
+    middleware: 'guest'
 });
 
 </script>
