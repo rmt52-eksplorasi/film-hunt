@@ -35,12 +35,11 @@
 <script setup>
 
 import { ref } from 'vue'
-import { useToast } from 'vue-toastification'
+import { toast } from 'vue-sonner'
 import { useNuxtApp } from '#app'
 import { useLoadingStore } from "~/stores/loading";
 import { useUserStore } from '~/stores/user';
 
-const toast = useToast();
 const router = useRouter();
 const loadingsStore = useLoadingStore();
 const selectedGenreId = ref(null);
