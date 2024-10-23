@@ -1,7 +1,7 @@
 <template>
-<div class="flex justify-center items-center min-h-screen bg-gray-100">
-    <div class="w-full max-w-md p-8 space-y-4 bg-white shadow-md rounded-lg">
-        <h2 class="text-2xl font-bold text-center text-gray-700">Create Movie</h2>
+<div class="flex justify-center items-center min-h-screen bg-base-100">
+    <div class="w-full max-w-md p-8 space-y-4 shadow-md rounded-lg bg-base-300">
+        <h2 class="text-2xl font-bold text-center">Create Movie</h2>
         <div class="form-control">
             <form
                 @submit.prevent="handleCreate"

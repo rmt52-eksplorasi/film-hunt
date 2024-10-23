@@ -8,7 +8,7 @@
         </figure>
         <div class="card-body md:w-2/3 flex flex-col">
           <div>
-            <a class="text-lg rounded-lg bg-gray-300 p-1.5 font-bold">{{ movie.Genre.name }}</a>
+            <a class="text-lg rounded-lg bg-base-300 p-1.5 font-bold">{{ movie.Genre.name }}</a>
           </div>
           <div>
             <p class="text-lg">{{ movie.synopsis }}</p>
@@ -18,7 +18,7 @@
             </p>
           </div>
           <div class="mt-4">
-            <NuxtLink to="/" class="text-lg rounded-md bg-gray-300 hover:bg-gray-200 p-2 font-bold">Go back</NuxtLink>
+            <NuxtLink to="/" class="text-lg rounded-md btn btn-outline btn-primary p-2 font-bold">Go back</NuxtLink>
           </div>
         </div>
       </div>

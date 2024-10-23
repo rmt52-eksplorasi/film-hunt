@@ -16,7 +16,7 @@
                     </li>
                     <li v-if="isLoggedIn" tabIndex="0">
                         <details>
-                            <summary>CMS</summary>
+                            <summary>Manage</summary>
                             <ul class="p-2">
                                 <li v-for="(cmsLink, index) in cmsLinks" :key="index">
                                     <NuxtLink :to="cmsLink.url">{{ cmsLink.text }}</NuxtLink>
@@ -26,7 +26,9 @@
                     </li>
                 </ul>
             </div>
-            <NuxtLink to="/" class="btn btn-ghost normal-case text-xl">Film Hunt</NuxtLink>
+            <NuxtLink to="/">
+                <NuxtImg src="/icon1.png" alt="Icon" class="drop-shadow-[0_0_1px_rgba(255,255,255,1)] w-[150px] sm:w-[250px] h-[50px] object-cover" />
+            </NuxtLink>
         </div>
         <!-- End: Navbar for small screens -->
 
@@ -39,9 +41,8 @@
                 <li v-if="isLoggedIn" class="dropdown">
                     <label tabIndex="0" class="flex items-center cursor-pointer">
                         Manage
-                        <svg :class="{ 'rotate-180': dropdownOpen }" xmlns="http://www.w3.org/2000/svg"
-                            class="h-4 w-4 ml-2 transition-transform duration-200" viewBox="0 0 20 20"
-                            fill="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2 transition-transform duration-200"
+                            viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd"
                                 d="M5.23 7.21a.75.75 0 011.06.02L10 10.93l3.7-3.7a.75.75 0 111.08 1.04l-4.24 4.25a.75.75 0 01-1.08 0L5.23 8.27a.75.75 0 01.02-1.06z"
                                 clip-rule="evenodd" />
@@ -60,7 +61,7 @@
         <!-- Start: Login/Logout buttons -->
         <div class="navbar-end">
             <template v-if="isLoggedIn">
-                <div class="flex flex-col items-center text-gray-700 font-semibold mr-2">
+                <div class="flex flex-col items-center font-semibold mr-2 text-xs sm:text-sm">
                     <span class="">Logged in as:</span>
                     <span>{{ email }}</span>
                 </div>
