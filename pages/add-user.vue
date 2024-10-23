@@ -37,7 +37,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useNuxtApp } from '#app'
-import { useToast } from 'vue-toastification'
+import { toast } from 'vue-sonner'
 import { useUserStore } from "~/stores/user";
 import { useLoadingStore } from "~/stores/loading";
 import { useRouter } from 'vue-router';
@@ -50,7 +50,6 @@ const form = ref({
 
 // Use Nuxt App for Axios
 const { $axios } = useNuxtApp()
-const toast = useToast()
 const userStore = useUserStore()
 const loadingStore = useLoadingStore()
 const token = userStore.token

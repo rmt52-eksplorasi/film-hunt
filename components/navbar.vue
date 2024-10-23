@@ -78,7 +78,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useToast } from 'vue-toastification'
+import { toast } from 'vue-sonner'
 import { useUserStore } from '~/stores/user';
 import { useLoadingStore } from "~/stores/loading";
 
@@ -95,7 +95,6 @@ const cmsLinks = ref([
     // { text: 'Create New Genre', url: '/cms/genres/create' }
 ]);
 
-const toast = useToast()
 const isLoggedIn = ref(false)
 const router = useRouter()
 const userStore = useUserStore()
