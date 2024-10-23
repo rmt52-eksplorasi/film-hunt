@@ -9,7 +9,7 @@
             </div>
 
             <h2 class="text-2xl font-bold text-center">Login</h2>
-
+            
             <form @submit.prevent="handleLogin">
                 <div class="form-control">
                     <label class="label">
@@ -37,13 +37,12 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useToast } from 'vue-toastification'
+import { toast } from 'vue-sonner'
 import { useNuxtApp } from '#app'
 import { useRouter } from 'vue-router'
 import { useUserStore } from "~/stores/user";
 import { useLoadingStore } from "~/stores/loading";
 
-const toast = useToast()
 const userStore = useUserStore()
 const loadingStore = useLoadingStore()
 

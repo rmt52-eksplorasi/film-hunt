@@ -84,7 +84,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useToast } from 'vue-toastification';
+import { toast } from 'vue-sonner'
 import { useNuxtApp } from '#app';
 import { useLoadingStore } from '~/stores/loading';
 
@@ -92,7 +92,6 @@ const genres = ref([]);
 const selectedGenre = ref('');
 const form = ref({ name: '' });
 const newGenre = ref({ name: '' });
-const toast = useToast();
 const loadingStore = useLoadingStore();
 const req = useRequestHeaders();
 const token = getCookie("token", req);

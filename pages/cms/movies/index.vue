@@ -228,14 +228,13 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useUserStore } from '~/stores/user';
-import { useToast } from 'vue-toastification';
+import { toast } from 'vue-sonner'
 import { useNuxtApp } from '#app';
 import { useLoadingStore } from "~/stores/loading";
 
 const movies = ref([]);  // State to store movie data
 const selectedMovie = ref(null);  // State to store selected movie for changing image
 const newImage = ref(null);  // State to store the uploaded image
-const toast = useToast();
 const userStore = useUserStore();
 const loadingStore = useLoadingStore()
 const { $axios } = useNuxtApp();
