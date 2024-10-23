@@ -100,4 +100,13 @@ definePageMeta({
     middleware: 'auth'
 })
 
+onMounted(() => {
+    useHead({
+        title: 'Add User - Film Hunt',
+        meta: [
+            { name: 'description', content: 'Explore a vast collection of movies, discover new favorites, and keep track of what you want to watch next with Film Hunt.' },
+            { property: 'og:image', content: '/icon3.png' },
+        ],
+    });
+});
 </script>

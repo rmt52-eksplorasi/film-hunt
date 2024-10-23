@@ -143,9 +143,13 @@ watch([searchQuery, selectedGenreId, sortOrder], () => {
 onMounted(() => {
   fetchMovies();
   fetchGenres();
+  useHead({
+    title: 'Film Hunt - Discover Your Favorite Movies',
+    meta: [
+      { name: 'description', content: 'Explore a vast collection of movies, discover new favorites, and keep track of what you want to watch next with Film Hunt.' },
+      {property: 'og:image', content: '/icon3.png'},
+    ],
+  });
 });
 
-definePageMeta({
-  title: 'Home',
-})
 </script>

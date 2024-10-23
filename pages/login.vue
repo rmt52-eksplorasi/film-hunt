@@ -3,7 +3,8 @@
         <div class="w-full max-w-md p-8 space-y-4 bg-base-100 shadow-md rounded-lg">
             <div class="text-center flex">
                 <NuxtLink to="/" class="mx-auto">
-                    <NuxtImg src="/icon1.png" alt="Icon" class="drop-shadow-[0_0_1px_rgba(255,255,255,1)] w-[250px] h-[50px] object-cover rounded-lg" />
+                    <NuxtImg src="/icon1.png" alt="Icon"
+                        class="drop-shadow-[0_0_1px_rgba(255,255,255,1)] w-[250px] h-[50px] object-cover rounded-lg" />
                 </NuxtLink>
             </div>
 
@@ -100,6 +101,16 @@ const handleLogin = async () => {
 
 definePageMeta({
     middleware: 'guest'
+});
+
+onMounted(() => {
+    useHead({
+        title: 'Login - Film Hunt',
+        meta: [
+            { name: 'description', content: 'Explore a vast collection of movies, discover new favorites, and keep track of what you want to watch next with Film Hunt.' },
+            { property: 'og:image', content: '/icon3.png' },
+        ],
+    });
 });
 
 </script>
