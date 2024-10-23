@@ -143,13 +143,27 @@ watch([searchQuery, selectedGenreId, sortOrder], () => {
 onMounted(() => {
   fetchMovies();
   fetchGenres();
-  useHead({
-    title: 'Film Hunt - Discover Your Favorite Movies',
-    meta: [
-      { name: 'description', content: 'Explore a vast collection of movies, discover new favorites, and keep track of what you want to watch next with Film Hunt.' },
-      {property: 'og:image', content: '/icon3.png'},
-    ],
-  });
 });
+
+useHead({
+  title: 'Film Hunt - Discover Your Favorite Movies',
+  meta: [
+    { name: 'description', content: 'Explore a vast collection of movies, discover new favorites, and keep track of what you want to watch next with Film Hunt!' },
+    { property: 'og:title', content: 'Discover Your Favorite Movies' },
+    { property: 'og:description', content: 'Explore movies.' },
+    { property: 'og:image', content: '/icon2.png' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:image', content: '/icon2.png' },
+  ],
+});
+
+// useSeoMeta({
+//   title: () => 'Film Hunt - Discover Your Favorite Movies',
+//   description: () => 'Explore a vast collection of movies, discover new favorites, and keep track of what you want to watch next with Film Hunt.',
+//   image: () => '/icon2.png',
+//   ogTitle: () => 'Discover Your Favorite Movies',
+//   ogDescription: () => 'Explore movies.',
+//   ogImage: () => '/icon2.png',
+// });
 
 </script>

@@ -37,29 +37,51 @@ const id = route.params.id;
 const movie = ref(null);
 const { $axios } = useNuxtApp();
 
-onMounted(async () => {
+async function fetchMovie() {
   try {
-    // fetching detail movie by id
     const response = await $axios.get(`/pub/movie/movies/${id}`);
     if (response.data.statusCode === 200) {
       movie.value = response.data.data;
-      useHead({
-        title: `${movie.value.title} - Film Hunt`,
-        meta: [
-          {
-            name: 'description',
-            content: movie.value.synopsis,
-          },
-          {
-            property: 'og:image', content: movie.value.imgUrl,
-          }
-        ],
-      });
+      return movie.value;
     } else {
       console.error("Error fetching movie:", response.data.message);
     }
   } catch (error) {
     console.error("Error fetching movie:", error);
   }
+}
+
+// Set meta values dynamically after fetching movie data
+async function setMeta() {
+  await fetchMovie();
+  if (movie.value) {
+    useHead({
+      title: `${movie.value.title} - Film Hunt`,
+      meta: [
+        { name: 'description', content: movie.value.synopsis },
+        { property: 'og:title', content: `${movie.value.title} - Film Hunt` },
+        { property: 'og:description', content: movie.value.synopsis },
+        { property: 'og:image', content: movie.value.imgUrl },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:image', content: movie.value.imgUrl }
+      ]
+    });
+  }
+}
+
+const metadata = await fetchMovie();
+useHead({
+  title: `${metadata.title} - Film Hunt`,
+  meta: [
+    { name: 'description', content: metadata.synopsis },
+    { property: 'og:title', content: `${metadata.title} - Film Hunt` },
+    { property: 'og:description', content: metadata.synopsis },
+    { property: 'og:image', content: metadata.imgUrl },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:image', content: metadata.imgUrl }
+  ]
 });
+
+
+onMounted(setMeta);
 </script>

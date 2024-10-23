@@ -9,7 +9,7 @@
             </div>
 
             <h2 class="text-2xl font-bold text-center">Login</h2>
-            
+
             <form @submit.prevent="handleLogin">
                 <div class="form-control">
                     <label class="label">
@@ -102,14 +102,16 @@ definePageMeta({
     middleware: 'guest'
 });
 
-onMounted(() => {
-    useHead({
-        title: 'Login - Film Hunt',
-        meta: [
-            { name: 'description', content: 'Explore a vast collection of movies, discover new favorites, and keep track of what you want to watch next with Film Hunt.' },
-            { property: 'og:image', content: '/icon3.png' },
-        ],
-    });
+useHead({
+    title: 'Login - Film Hunt',
+    meta: [
+        { name: 'description', content: 'Explore a vast collection of movies, discover new favorites, and keep track of what you want to watch next with Film Hunt.' },
+        { property: 'og:image', content: '/icon3.png' },
+        { property: 'og:title', content: 'Discover Your Favorite Movies' },
+        { property: 'og:description', content: 'Explore movies.' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:image', content: '/icon3.png' },
+    ],
 });
 
 </script>
