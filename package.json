@@ -19,5 +19,9 @@
     "pinia": "^2.2.4",
     "vue": "latest",
     "vue-sonner": "^1.2.3"
+  },
+  "devDependencies": {
+    "@vueuse/core": "^11.1.0",
+    "@vueuse/motion": "^2.2.6"
   }
 }
