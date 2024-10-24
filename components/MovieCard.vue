@@ -1,5 +1,5 @@
 <template>
-  <div class="card card-side bg-base-100 shadow-xl p-4 sm:w-[640px] w-[370px]">
+  <div class="card card-side bg-base-100 shadow-xl p-4 sm:w-[640px] w-[370px] h-72">
     <figure class="w-[160px]">
       <img :src="movie.imgUrl" :alt="movie.title" class="rounded-lg"/>
     </figure>
